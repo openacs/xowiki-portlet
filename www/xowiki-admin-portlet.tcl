@@ -53,7 +53,7 @@ if { $package_id ne "" } {
 	   -with_subtypes true \
 	   -from_clause ", xowiki_page P" \
 	   -where_clause "P.page_id = cr.revision_id" \
-	   -order_clause "order by ci.name" \
+	   -orderby "ci.name" \
 	  ] {
 	    if {[regexp {^::[0-9]} $name]} continue
 	    if {[info exists used_page_id($name)]} continue
