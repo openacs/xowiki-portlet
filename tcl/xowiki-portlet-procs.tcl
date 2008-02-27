@@ -1,73 +1,201 @@
-#
-#  Copyright (C) 2001, 2002 MIT
-#
-#  This file is part of dotLRN.
-#
-#  dotLRN is free software; you can redistribute it and/or modify it under the
-#  terms of the GNU General Public License as published by the Free Software
-#  Foundation; either version 2 of the License, or (at your option) any later
-#  version.
-#
-#  dotLRN is distributed in the hope that it will be useful, but WITHOUT ANY
-#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-#  details.
-#
-
 ad_library {
-
-    Procedures to supports xowiki portlets.
+  Procedures to supports xowiki portlets.
+  
+  @creation-date 2008-02-26
+  @author Gustaf Neumann
+  @cvs-id $Id$
 }
 
-namespace eval xowiki_portlet {
+#
+# This is the first approach to make the portlet-procs 
+#
+#  (a) in an oo-style (the object below contains everything 
+#      for the management of the portlet) and
+#  (b) independent from the database layer 
+#      (supposed to work under postgres and Oracle)
+#
+# In the next steps, it would make sense to define a ::dotlrn::Portlet
+# class, which provides some of the common behaviour defined here...
+#
 
-    ad_proc -private get_my_name {
-    } {
-	return "xowiki_portlet"
-    }
+Object xowiki_portlet
+xowiki_portlet proc name {} {
+  return "xowiki-portlet"
+}
 
-    ad_proc -public get_pretty_name {
-    } {
-	return ""
-    }
+xowiki_portlet proc pretty_name {} {
+  return ""
+}
 
-    ad_proc -private my_package_key {
-    } {
-        return "xowiki-portlet"
-    }
+xowiki_portlet proc package_key {} {
+  return "xowiki-portlet"
+}
 
-    ad_proc -public link {
-    } {
-	return ""
-    }
+xowiki_portlet proc link {} {
+  return ""
+}
 
-    ad_proc -public add_self_to_page {
-	{-portal_id:required}
-	{-package_id:required}
-    } {
-	Adds a static PE to the given page
-    } {
-        ns_log notice "xowiki_portlet::add_self_to_page - Don't call me. Use static_portal_content:: instead"
-        error
-    }
+xowiki_portlet ad_proc add_self_to_page {
+  {-portal_id:required}
+  {-package_id:required}
+} {
+  Adds a PE to the given page
+} {
+  ns_log notice "xowiki_portlet::add_self_to_page - Don't call me. "
+  error "don't call me"
+}
 
-    ad_proc -public remove_self_from_page {
-	portal_id
-	element_id
-    } {
-	Removes static PE from the given page
-    } {
-        # This is easy since there's one and only one instace_id
-        portal::remove_element $element_id
-    }
+xowiki_portlet ad_proc remove_self_from_page {
+  portal_id
+  element_id
+} {
+  Removes PE from the given page
+} {
+  # This is easy since there's one and only one instace_id
+  portal::remove_element $element_id
+}
 
-    ad_proc -public show {
-	cf
+xowiki_portlet ad_proc show {cf} {
+} {
+  portal::show_proc_helper \
+      -package_key [my package_key] \
+      -config_list $cf \
+      -template_src "xowiki-portlet"
+}
+
+#
+# install
+#
+xowiki_portlet proc install {} {
+  my log "--portlet calling [self proc]"
+  set name [my name]
+  #
+  # create the datasource
+  #
+  db_transaction {
+    set ds_id [::xo::db::sql::portal_datasource new -name $name \
+                   -css_dir "" \
+                   -description "Displays an xowiki page as a portlet"]
+    
+    # default configuration
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p t \
+        -key "shadeable_p" -value t
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p t \
+        -key "shaded_p" -value f
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p t \
+        -key "hideable_p" -value t
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p t \
+        -key "user_editable_p" -value f
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p t \
+        -key "link_hideable_p" -value t
+    
+    # xowiki-specific configuration
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+        -config_required_p t -configured_p f \
+        -key "package_id" -value ""
+    
+    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+      -config_required_p t -configured_p f \
+	-key "page_name" -value ""
+    
+    #
+    # service contract managemet
+    #
+    # create the implementation
+    ::xo::db::sql::acs_sc_impl new \
+        -impl_contract_name "portal_datasource" -impl_name $name \
+        -impl_pretty_name "" -impl_owner_name $name
+    
+    # add the operations
+    foreach {operation call} {
+      GetMyName     	"xowiki_portlet name"
+      GetPrettyName 	"xowiki_portlet pretty_name"
+      Link          	"xowiki_portlet link"
+      AddSelfToPage 	"xowiki_portlet add_self_to_page"
+      Show          	"xowiki_portlet show"
+      Edit          	"xowiki_portlet edit"
+      RemoveSelfFromPage	"xowiki_portlet remove_self_from_page"
     } {
-    } {
-        portal::show_proc_helper \
-            -package_key [my_package_key] \
-            -config_list $cf \
-            -template_src "xowiki-portlet"
+      ::xo::db::sql::acs_sc_impl_alias new \
+          -impl_contract_name "portal_datasource" -impl_name $name  \
+          -impl_operation_name $operation -impl_alias $call \
+          -impl_pl "TCL"
     }
+    
+    # Add the binding
+    ::xo::db::sql::acs_sc_binding new \
+        -contract_name "portal_datasource" -impl_name $name
+  }
+  my log "--portlet end of [self proc]"
+}
+
+#
+# uninstall
+#
+
+xowiki_portlet proc uninstall {} {
+  my log "--portlet calling [self proc]"
+  #
+  # completely identical to "xowiki_admin_portlet uninstall"
+  #
+  set name [my name]
+
+  db_transaction {
+    # 
+    # get the datasource
+    #
+    set ds_id [db_string dbqd..get_ds_id {
+      select datasource_id from portal_datasources where name = :name
+    } -default "0"]
+    
+    if {$ds_id == 0} {
+      error "No datasource id found for $name"
+    }
+    #
+    # drop the datasource
+    #
+    ::xo::db::sql::portal_datasource delete -datasource_id $ds_id
+    #
+    #  drop the operation
+    #
+    foreach operation {
+      GetMyName GetPrettyName Link AddSelfToPage 
+      Show Edit RemoveSelfFromPage
+    } {
+      ::xo::db::sql::acs_sc_impl_alias delete \
+          -impl_contract_name "portal_datasource" -impl_name $name \
+          -impl_operation_name $operation
+    }
+    #
+    #  drop the binding
+    #
+    ::xo::db::sql::acs_sc_binding delete \
+        -contract_name "portal_datasource" -impl_name $name
+    #
+    #  drop the implementation
+    #
+    ::xo::db::sql::acs_sc_impl delete \
+        -impl_contract_name "portal_datasource" -impl_name $name 
+  }
+  my log "--portlet end of [self proc]"
+}
+
+::xowiki_portlet proc after-install {} {
+  ::xowiki_portlet install
+  ::xowiki_admin_portlet install
+}
+
+::xowiki_portlet proc before-uninstall {} {
+  ::xowiki_portlet uninstall
+  ::xowiki_admin_portlet uninstall
 }

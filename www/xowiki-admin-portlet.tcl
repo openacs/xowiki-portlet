@@ -38,12 +38,12 @@ if { $package_id ne "" } {
 	  from portal_element_map m, portal_pages p, portal_element_parameters pep
           where m.page_id = p.page_id 
           and p.portal_id = $template_portal_id 
-          and m.datasource_id = [portal::get_datasource_id [xowiki_portlet::get_my_name]]
+          and m.datasource_id = [portal::get_datasource_id [xowiki_portlet name]]
           and pep.element_id = m.element_id and pep.key = 'page_name'" {}
-  
+
   # don't ask to insert same page twice
   template::multirow foreach content {set used_page_id($name) 1}
-
+  
   array set config $cf
   set options ""
   ::xowiki::Package initialize -package_id $config(package_id)
@@ -52,7 +52,7 @@ if { $package_id ne "" } {
 	   -folder_id [::$package_id folder_id] \
 	   -with_subtypes true \
 	   -from_clause ", xowiki_page P" \
-	   -where_clause "P.page_id = cr.revision_id" \
+	   -where_clause "P.page_id = bt.revision_id" \
 	   -orderby "ci.name" \
 	  ] {
 	    if {[regexp {^::[0-9]} $name]} continue
@@ -65,14 +65,14 @@ if { $package_id ne "" } {
       <form name="new_xowiki_element" method="post" action="[$package_id package_url]admin/portal-element-add">
       <input type="hidden" name="portal_id" value="$template_portal_id">
       <input type="hidden" name="referer" value="$referer">
-      Add #xowiki-portlet.new_xowiki_admin_portlet# <select name="page_name" id="new_xowiki_element_page_id">
+      #xowiki-portlet.new_xowiki_admin_portlet# <select name="page_name" id="new_xowiki_element_page_id">
       $options
       </select>
       <input type="submit" name="formbutton:ok" value="       OK       " id="new_xowiki_element_formbutton:ok" />
       </form>
     }]
   } else {
-    set form "All pages already used"
+    set form "#xowiki-portlet.all-pages-used#"
   }
   
   set applet_url [$package_id package_url]

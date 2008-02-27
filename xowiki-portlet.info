@@ -7,19 +7,22 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
     
-    <version name="1.0.2" url="http://openacs.org/repository/download/apm/xowiki-portlet-1.0.2.apm">
-        <owner url="http://www.km.co.at">Michael Totschnig</owner>
-        <owner>Gustaf Neumann</owner>
-        <release-date>2007-01-28</release-date>
+    <version name="2.0" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.0.apm">
+        <owner url="http://www.km.co.at">Gustaf Neumann</owner>
+        <owner>Michael Totschnig</owner>
+        <release-date>2008-02-27</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
+        <license>BSD-Style</license>
         <maturity>0</maturity>
 
-        <provides url="xowiki-portlet" version="1.0.2"/>
+        <provides url="xowiki-portlet" version="2.0"/>
         <requires url="dotlrn" version="1.0d1"/>
         <requires url="new-portal" version="0.2d1"/>
-        <requires url="xowiki" version="0.44"/>
+        <requires url="xowiki" version="0.81"/>
 
         <callbacks>
+            <callback type="after-install"  proc="::xowiki_portlet::after-install"/>
+            <callback type="before-uninstall"  proc="::xowiki_portlet::before-uninstall"/>
         </callbacks>
         <parameters>
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="xowiki_admin_portlet_element_pretty_name"  default="#xowiki-portlet.admin_portlet_element_pretty_name#" description="the name in the UI for xowiki element"/>
