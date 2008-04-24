@@ -18,7 +18,7 @@
         <provides url="xowiki-portlet" version="2.0"/>
         <requires url="dotlrn" version="1.0d1"/>
         <requires url="new-portal" version="0.2d1"/>
-        <requires url="xowiki" version="0.81"/>
+        <requires url="xowiki" version="0.83"/>
 
         <callbacks>
             <callback type="after-install"  proc="::xowiki_portlet::after-install"/>

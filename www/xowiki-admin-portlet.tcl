@@ -57,7 +57,7 @@ db_foreach instance_select \
 	 -folder_id [::$xowiki_package_id folder_id] \
 	 -with_subtypes true \
 	 -from_clause ", xowiki_page P" \
-	 -where_clause "P.page_id = cr.revision_id" \
+	 -where_clause "P.page_id = bt.revision_id" \
 	 -orderby "ci.name" \
 	] {
 	  if {[regexp {^::[0-9]} $name]} continue

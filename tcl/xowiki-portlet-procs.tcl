@@ -157,16 +157,19 @@ xowiki_portlet proc uninstall {} {
     set ds_id [db_string dbqd..get_ds_id {
       select datasource_id from portal_datasources where name = :name
     } -default "0"]
-    
-    if {$ds_id == 0} {
-      error "No datasource id found for $name"
-    }
+
+    if {$ds_id != 0} {
+      #
+      # drop the datasource
+      #
+      ::xo::db::sql::portal_datasource delete -datasource_id $ds_id
+      #
+    } else {
+      ns_log notice "No datasource id found for $name"
+    }    
+
     #
-    # drop the datasource
-    #
-    ::xo::db::sql::portal_datasource delete -datasource_id $ds_id
-    #
-    #  drop the operation
+    #  drop the operations
     #
     foreach operation {
       GetMyName GetPrettyName Link AddSelfToPage 
