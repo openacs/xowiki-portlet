@@ -11,7 +11,7 @@ ad_page_contract {
   return_url:optional
 }
 
-if {[exists_and_not_null package_id]} {
+if {([info exists package_id] && $package_id ne "")} {
   set xowiki_package_id $package_id
 } elseif {[info exists cf]} {
   array set config $cf
@@ -24,11 +24,11 @@ if {[exists_and_not_null package_id]} {
 ::xowiki::Package initialize -package_id $xowiki_package_id
 set applet_url [::$xowiki_package_id package_url]
 
-if {![exists_and_not_null template_portal_id]} {
+if {(![info exists template_portal_id] || $template_portal_id eq "")} {
   set template_portal_id [dotlrn_community::get_portal_id]
 }
   
-if {![info exists referer] && [exists_and_not_null return_url]} {
+if {![info exists referer] && ([info exists return_url] && $return_url ne "")} {
   set referer $return_url
 }
   
