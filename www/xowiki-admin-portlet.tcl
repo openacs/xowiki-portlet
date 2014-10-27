@@ -5,8 +5,8 @@ ad_page_contract {
     @author Gustaf Neumann
     @cvs_id $Id$
 } {
-  package_id:optional
-  template_portal_id:optional
+  package_id:naturalnum,optional
+  template_portal_id:naturalnum,optional
   referer:optional
   return_url:optional
 }
