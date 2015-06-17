@@ -7,7 +7,7 @@
 <ul>
 <multiple name="content">
   <li>
-    @content.pretty_name@<small> <a class="button" href="@applet_url@admin/portal-element-remove?element_id=@content.element_id@&referer=@referer@&portal_id=@template_portal_id@">#xowiki-portlet.remove-portlet#</a></small>
+    @content.pretty_name@<small> <a class="button" href="@applet_url@admin/portal-element-remove?element_id=@content.element_id@&amp;referer=@referer@&amp;portal_id=@template_portal_id@">#xowiki-portlet.remove-portlet#</a></small>
   </li>
 </multiple>
 </ul>
