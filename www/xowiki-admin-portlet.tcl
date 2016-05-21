@@ -8,7 +8,7 @@ ad_page_contract {
   package_id:naturalnum,optional
   template_portal_id:naturalnum,optional
   referer:optional
-  return_url:optional
+  return_url:localurl,optional
 }
 
 if {([info exists package_id] && $package_id ne "")} {
