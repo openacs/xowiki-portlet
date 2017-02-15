@@ -10,14 +10,14 @@
     <version name="2.2d1" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.2d1.apm">
         <owner url="http://www.km.co.at">Michael Totschnig </owner>
 	<summary>Portlet for XoWiki</summary>
-        <release-date>2015-10-04</release-date>
+        <release-date>2016-05-21</release-date>
         <vendor url="http://wu.ac.at">WU Vienna</vendor>
         <license>BSD-Style</license>
         <maturity>1</maturity>
 
         <provides url="xowiki-portlet" version="2.2d1"/>
-        <requires url="dotlrn" version="2.9.1d1"/>
-        <requires url="new-portal" version="2.9.0"/>
+        <requires url="dotlrn" version="2.9.1b1"/>
+        <requires url="new-portal" version="2.9.1b1"/>
         <requires url="xowiki" version="0.83"/>
 
         <callbacks>
