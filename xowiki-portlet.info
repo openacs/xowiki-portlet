@@ -16,8 +16,8 @@
         <maturity>1</maturity>
 
         <provides url="xowiki-portlet" version="2.2"/>
-        <requires url="dotlrn" version="2.9.1"/>
-        <requires url="new-portal" version="2.9.1"/>
+        <requires url="dotlrn" version="2.10.0d0"/>
+        <requires url="new-portal" version="2.10.0d0"/>
         <requires url="xowiki" version="0.83"/>
 
         <callbacks>
