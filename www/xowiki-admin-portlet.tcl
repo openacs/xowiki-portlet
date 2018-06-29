@@ -1,9 +1,9 @@
 ad_page_contract {
     The display logic for the xowiki admin portlet
-    
+
     @author Michael Totschnig
     @author Gustaf Neumann
-    @cvs_id $Id$
+    @cvs-id $Id$
 } {
   package_id:naturalnum,optional
   template_portal_id:naturalnum,optional
