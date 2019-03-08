@@ -1,17 +1,17 @@
 ad_library {
   Procedures to supports xowiki admin portlets.
-  
+
   @creation-date 2008-02-26
   @author Gustaf Neumann
   @cvs-id $Id$
 }
 
 #
-# This is the first approach to make the portlet-procs 
+# This is the first approach to make the portlet-procs
 #
-#  (a) in an oo-style (the object below contains everything 
+#  (a) in an oo-style (the object below contains everything
 #      for the management of the portlet) and
-#  (b) independent from the database layer 
+#  (b) independent from the database layer
 #      (supposed to work under postgres and Oracle)
 #
 # In the next steps, it would make sense to define a ::dotlrn::Portlet
@@ -84,37 +84,37 @@ xowiki_admin_portlet proc install {} {
     set ds_id [::xo::db::sql::portal_datasource new -name $name \
                    -css_dir "" \
                    -description "Displays the admin interface for the xowiki data portlets"]
-    
+
     # default configuration
-    
+
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shadeable_p" -value f
-    
+
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shaded_p" -value f
-    
+
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "hideable_p" -value t
-    
+
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "user_editable_p" -value f
-    
+
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "link_hideable_p" -value t
-    
+
     # xowiki-admin-specific procs
-    
+
     # package_id must be configured
     ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p f \
         -key "package_id" -value ""
-    
-    
+
+
     #
     # service contract managemet
     #
@@ -122,23 +122,23 @@ xowiki_admin_portlet proc install {} {
     ::xo::db::sql::acs_sc_impl new \
         -impl_contract_name "portal_datasource" -impl_name $name \
         -impl_pretty_name "" -impl_owner_name $name
-    
+
     # add the operations
     foreach {operation call} {
-      GetMyName     	"xowiki_admin_portlet name"
-      GetPrettyName 	"xowiki_admin_portlet pretty_name"
-      Link          	"xowiki_admin_portlet link"
-      AddSelfToPage 	"xowiki_admin_portlet add_self_to_page"
-      Show          	"xowiki_admin_portlet show"
-      Edit          	"xowiki_admin_portlet edit"
-      RemoveSelfFromPage	"xowiki_admin_portlet remove_self_from_page"
+      GetMyName             "xowiki_admin_portlet name"
+      GetPrettyName         "xowiki_admin_portlet pretty_name"
+      Link                  "xowiki_admin_portlet link"
+      AddSelfToPage         "xowiki_admin_portlet add_self_to_page"
+      Show                  "xowiki_admin_portlet show"
+      Edit                  "xowiki_admin_portlet edit"
+      RemoveSelfFromPage    "xowiki_admin_portlet remove_self_from_page"
     } {
       ::xo::db::sql::acs_sc_impl_alias new \
           -impl_contract_name "portal_datasource" -impl_name $name  \
           -impl_operation_name $operation -impl_alias $call \
           -impl_pl "TCL"
     }
-    
+
     # Add the binding
     ::xo::db::sql::acs_sc_binding new \
         -contract_name "portal_datasource" -impl_name $name
@@ -154,13 +154,13 @@ xowiki_admin_portlet proc uninstall {} {
   set name [:name]
   db_transaction {
 
-    # 
+    #
     # get the datasource
     #
     set ds_id [db_string dbqd..get_ds_id {
       select datasource_id from portal_datasources where name = :name
     } -default "0"]
-    
+
     if {$ds_id != 0} {
       #
       # drop the datasource
@@ -174,7 +174,7 @@ xowiki_admin_portlet proc uninstall {} {
     #  drop the operations
     #
     foreach operation {
-      GetMyName GetPrettyName Link AddSelfToPage 
+      GetMyName GetPrettyName Link AddSelfToPage
       Show Edit RemoveSelfFromPage
     } {
       ::xo::db::sql::acs_sc_impl_alias delete \
@@ -190,11 +190,13 @@ xowiki_admin_portlet proc uninstall {} {
     #  drop the implementation
     #
     ::xo::db::sql::acs_sc_impl delete \
-        -impl_contract_name "portal_datasource" -impl_name $name 
-  }  
+        -impl_contract_name "portal_datasource" -impl_name $name
+  }
   :log "--portlet end of [self proc]"
 }
-  
 
-
-
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 2
+#    indent-tabs-mode: nil
+# End:
