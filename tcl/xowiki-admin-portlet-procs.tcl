@@ -24,7 +24,7 @@ xowiki_admin_portlet proc name {} {
 
 xowiki_admin_portlet proc pretty_name {} {
   return [parameter::get_from_package_key \
-              -package_key [my package_key] \
+              -package_key [:package_key] \
               -parameter xowiki_admin_portlet_pretty_name]
 }
 
@@ -44,7 +44,7 @@ xowiki_admin_portlet ad_proc add_self_to_page {
 } {
   return [portal::add_element_parameters \
               -portal_id $portal_id \
-              -portlet_name [my name] \
+              -portlet_name [:name] \
               -key package_id \
               -value $package_id \
              ]
@@ -59,7 +59,7 @@ xowiki_admin_portlet ad_proc remove_self_from_page {
   # This is easy since there's one and only one instace_id
   portal::remove_element \
       -portal_id $portal_id \
-      -portlet_name [my name]
+      -portlet_name [:name]
 }
 
 xowiki_admin_portlet ad_proc show {
@@ -68,14 +68,14 @@ xowiki_admin_portlet ad_proc show {
   Display the xowiki admin PE
 } {
   portal::show_proc_helper \
-      -package_key [my package_key] \
+      -package_key [:package_key] \
       -config_list $cf \
       -template_src "xowiki-admin-portlet"
 }
 
 xowiki_admin_portlet proc install {} {
-  my log "--portlet calling [self proc]"
-  set name [my name]
+  :log "--portlet calling [self proc]"
+  set name [:name]
   db_transaction {
 
     #
@@ -143,15 +143,15 @@ xowiki_admin_portlet proc install {} {
     ::xo::db::sql::acs_sc_binding new \
         -contract_name "portal_datasource" -impl_name $name
   }
-  my log "--portlet end of [self proc]"
+  :log "--portlet end of [self proc]"
 }
 
 xowiki_admin_portlet proc uninstall {} {
-  my log "--portlet calling [self proc]"
+  :log "--portlet calling [self proc]"
   #
   # completely identical to "xowiki_portlet uninstall"
   #
-  set name [my name]
+  set name [:name]
   db_transaction {
 
     # 
@@ -192,7 +192,7 @@ xowiki_admin_portlet proc uninstall {} {
     ::xo::db::sql::acs_sc_impl delete \
         -impl_contract_name "portal_datasource" -impl_name $name 
   }  
-  my log "--portlet end of [self proc]"
+  :log "--portlet end of [self proc]"
 }
   
 

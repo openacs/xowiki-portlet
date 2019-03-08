@@ -58,7 +58,7 @@ xowiki_portlet ad_proc remove_self_from_page {
 xowiki_portlet ad_proc show {cf} {
 } {
   portal::show_proc_helper \
-      -package_key [my package_key] \
+      -package_key [:package_key] \
       -config_list $cf \
       -template_src "xowiki-portlet"
 }
@@ -67,8 +67,8 @@ xowiki_portlet ad_proc show {cf} {
 # install
 #
 xowiki_portlet proc install {} {
-  my log "--portlet calling [self proc]"
-  set name [my name]
+  :log "--portlet calling [self proc]"
+  set name [:name]
   #
   # create the datasource
   #
@@ -136,7 +136,7 @@ xowiki_portlet proc install {} {
     ::xo::db::sql::acs_sc_binding new \
         -contract_name "portal_datasource" -impl_name $name
   }
-  my log "--portlet end of [self proc]"
+  :log "--portlet end of [self proc]"
 }
 
 #
@@ -144,11 +144,11 @@ xowiki_portlet proc install {} {
 #
 
 xowiki_portlet proc uninstall {} {
-  my log "--portlet calling [self proc]"
+  :log "--portlet calling [self proc]"
   #
   # completely identical to "xowiki_admin_portlet uninstall"
   #
-  set name [my name]
+  set name [:name]
 
   db_transaction {
     # 
@@ -190,7 +190,7 @@ xowiki_portlet proc uninstall {} {
     ::xo::db::sql::acs_sc_impl delete \
         -impl_contract_name "portal_datasource" -impl_name $name 
   }
-  my log "--portlet end of [self proc]"
+  :log "--portlet end of [self proc]"
 }
 
 ::xowiki_portlet proc after-install {} {
