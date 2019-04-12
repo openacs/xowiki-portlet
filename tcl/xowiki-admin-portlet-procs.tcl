@@ -15,7 +15,7 @@ ad_library {
 #      (supposed to work under postgres and Oracle)
 #
 # In the next steps, it would make sense to define a ::dotlrn::Portlet
-# class, which provides some of the common behaviour defined here...
+# class, which provides some of the common behavior defined here...
 #
 Object xowiki_admin_portlet
 xowiki_admin_portlet proc name {} {
