@@ -40,7 +40,7 @@ xowiki_admin_portlet ad_proc add_self_to_page {
   {-portal_id:required}
   {-package_id:required}
 } {
-  Adds a xowiki admin PE to the given portal
+  Adds an xowiki admin PE to the given portal
 } {
   return [portal::add_element_parameters \
               -portal_id $portal_id \
