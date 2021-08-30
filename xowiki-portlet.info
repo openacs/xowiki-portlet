@@ -7,7 +7,7 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
     
-    <version name="2.2" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.2.apm">
+    <version name="2.3" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.3.apm">
         <owner url="http://www.km.co.at">Michael Totschnig </owner>
 	<summary>Portlet for XoWiki</summary>
         <release-date>2017-08-06</release-date>
@@ -15,7 +15,7 @@
         <license>BSD-Style</license>
         <maturity>1</maturity>
 
-        <provides url="xowiki-portlet" version="2.2"/>
+        <provides url="xowiki-portlet" version="2.3"/>
         <requires url="dotlrn" version="2.10.0d0"/>
         <requires url="new-portal" version="2.10.0d0"/>
         <requires url="xowiki" version="0.83"/>
