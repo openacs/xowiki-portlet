@@ -10,7 +10,7 @@
     <version name="2.3" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.3.apm">
         <owner url="http://www.km.co.at">Michael Totschnig </owner>
 	<summary>Portlet for XoWiki</summary>
-        <release-date>2017-08-06</release-date>
+        <release-date>2021-09-15</release-date>
         <vendor url="http://wu.ac.at">WU Vienna</vendor>
         <license>BSD-Style</license>
         <maturity>1</maturity>
