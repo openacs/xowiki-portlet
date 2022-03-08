@@ -81,36 +81,36 @@ xowiki_admin_portlet proc install {} {
     #
     # create the datasource
     #
-    set ds_id [::xo::db::sql::portal_datasource new -name $name \
+    set ds_id [::acs::dc call portal_datasource new -name $name \
                    -css_dir "" \
                    -description "Displays the admin interface for the xowiki data portlets"]
 
     # default configuration
 
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shadeable_p" -value f
 
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shaded_p" -value f
 
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "hideable_p" -value t
 
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "user_editable_p" -value f
 
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "link_hideable_p" -value t
 
     # xowiki-admin-specific procs
 
     # package_id must be configured
-    ::xo::db::sql::portal_datasource set_def_param -datasource_id $ds_id \
+    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p f \
         -key "package_id" -value ""
 
@@ -119,7 +119,7 @@ xowiki_admin_portlet proc install {} {
     # service contract managemet
     #
     # create the implementation
-    ::xo::db::sql::acs_sc_impl new \
+    ::acs::dc call acs_sc_impl new \
         -impl_contract_name "portal_datasource" -impl_name $name \
         -impl_pretty_name "" -impl_owner_name $name
 
@@ -133,14 +133,14 @@ xowiki_admin_portlet proc install {} {
       Edit                  "xowiki_admin_portlet edit"
       RemoveSelfFromPage    "xowiki_admin_portlet remove_self_from_page"
     } {
-      ::xo::db::sql::acs_sc_impl_alias new \
+      ::acs::dc call acs_sc_impl_alias new \
           -impl_contract_name "portal_datasource" -impl_name $name  \
           -impl_operation_name $operation -impl_alias $call \
           -impl_pl "TCL"
     }
 
     # Add the binding
-    ::xo::db::sql::acs_sc_binding new \
+    ::acs::dc call acs_sc_binding new \
         -contract_name "portal_datasource" -impl_name $name
   }
   :log "--portlet end of [self proc]"
@@ -165,7 +165,7 @@ xowiki_admin_portlet proc uninstall {} {
       #
       # drop the datasource
       #
-      ::xo::db::sql::portal_datasource delete -datasource_id $ds_id
+      ::acs::dc call portal_datasource delete -datasource_id $ds_id
       #
     } else {
       ns_log notice "No datasource id found for $name"
@@ -177,19 +177,19 @@ xowiki_admin_portlet proc uninstall {} {
       GetMyName GetPrettyName Link AddSelfToPage
       Show Edit RemoveSelfFromPage
     } {
-      ::xo::db::sql::acs_sc_impl_alias delete \
+      ::acs::dc call acs_sc_impl_alias delete \
           -impl_contract_name "portal_datasource" -impl_name $name \
           -impl_operation_name $operation
     }
     #
     #  drop the binding
     #
-    ::xo::db::sql::acs_sc_binding delete \
+    ::acs::dc call acs_sc_binding delete \
         -contract_name "portal_datasource" -impl_name $name
     #
     #  drop the implementation
     #
-    ::xo::db::sql::acs_sc_impl delete \
+    ::acs::dc call acs_sc_impl delete \
         -impl_contract_name "portal_datasource" -impl_name $name
   }
   :log "--portlet end of [self proc]"
