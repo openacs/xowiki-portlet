@@ -56,6 +56,7 @@ xowiki_portlet ad_proc remove_self_from_page {
 }
 
 xowiki_portlet ad_proc show {cf} {
+  Show the portlet
 } {
   portal::show_proc_helper \
       -package_key [:package_key] \
