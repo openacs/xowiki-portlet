@@ -74,38 +74,38 @@ xowiki_portlet proc install {} {
   # create the datasource
   #
   db_transaction {
-    set ds_id [::acs::dc call portal_datasource new -name $name \
-                   -css_dir "" \
+    set ds_id [portal::datasource::new \
+                   -name $name \
                    -description "Displays an xowiki page as a portlet"]
 
     # default configuration
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shadeable_p" -value t
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "shaded_p" -value f
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "hideable_p" -value t
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "user_editable_p" -value f
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p t \
         -key "link_hideable_p" -value t
 
     # xowiki-specific configuration
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p f \
         -key "package_id" -value ""
 
-    ::acs::dc call portal_datasource set_def_param -datasource_id $ds_id \
+    portal::datasource::set_def_param -datasource_id $ds_id \
         -config_required_p t -configured_p f \
         -key "page_name" -value ""
 
@@ -113,9 +113,9 @@ xowiki_portlet proc install {} {
     # service contract managemet
     #
     # create the implementation
-    ::acs::dc call acs_sc_impl new \
-        -impl_contract_name "portal_datasource" -impl_name $name \
-        -impl_pretty_name "" -impl_owner_name $name
+    acs_sc::impl::new \
+        -contract_name "portal_datasource" -name $name \
+        -pretty_name "" -owner $name
 
     # add the operations
     foreach {operation call} {
@@ -127,14 +127,14 @@ xowiki_portlet proc install {} {
       Edit               "xowiki_portlet edit"
       RemoveSelfFromPage "xowiki_portlet remove_self_from_page"
     } {
-      ::acs::dc call acs_sc_impl_alias new \
-          -impl_contract_name "portal_datasource" -impl_name $name  \
-          -impl_operation_name $operation -impl_alias $call \
-          -impl_pl "TCL"
+      acs_sc::impl::alias::new \
+          -contract_name "portal_datasource" -impl_name $name \
+          -operation $operation -alias $call \
+          -language TCL
     }
 
     # Add the binding
-    ::acs::dc call acs_sc_binding new \
+    acs_sc::impl::binding::new \
         -contract_name "portal_datasource" -impl_name $name
   }
   :log "--portlet end of [self proc]"
@@ -163,33 +163,17 @@ xowiki_portlet proc uninstall {} {
       #
       # drop the datasource
       #
-      ::acs::dc call portal_datasource delete -datasource_id $ds_id
+      portal::datasource::delete -name $name
       #
     } else {
       ns_log notice "No datasource id found for $name"
     }
 
     #
-    #  drop the operations
-    #
-    foreach operation {
-      GetMyName GetPrettyName Link AddSelfToPage
-      Show Edit RemoveSelfFromPage
-    } {
-      ::acs::dc call acs_sc_impl_alias delete \
-          -impl_contract_name "portal_datasource" -impl_name $name \
-          -impl_operation_name $operation
-    }
-    #
-    #  drop the binding
-    #
-    ::acs::dc call acs_sc_binding delete \
-        -contract_name "portal_datasource" -impl_name $name
-    #
     #  drop the implementation
     #
-    ::acs::dc call acs_sc_impl delete \
-        -impl_contract_name "portal_datasource" -impl_name $name
+    acs_sc::impl::delete \
+        -contract_name "portal_datasource" -impl_name $name
   }
   :log "--portlet end of [self proc]"
 }
