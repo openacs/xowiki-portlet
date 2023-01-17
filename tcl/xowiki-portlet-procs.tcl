@@ -73,7 +73,7 @@ xowiki_portlet proc install {} {
   #
   # create the datasource
   #
-  db_transaction {
+  ::xo::dc transaction {
     set ds_id [portal::datasource::new \
                    -name $name \
                    -description "Displays an xowiki page as a portlet"]
@@ -151,13 +151,13 @@ xowiki_portlet proc uninstall {} {
   #
   set name [:name]
 
-  db_transaction {
+  ::xo::dc transaction {
     #
     # get the datasource
     #
-    set ds_id [db_string dbqd..get_ds_id {
+    set ds_id [::xo::dc get_value get_ds_id {
       select datasource_id from portal_datasources where name = :name
-    } -default "0"]
+    } 0]
 
     if {$ds_id != 0} {
       #

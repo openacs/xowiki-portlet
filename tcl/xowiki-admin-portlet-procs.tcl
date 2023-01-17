@@ -76,7 +76,7 @@ xowiki_admin_portlet ad_proc show {
 xowiki_admin_portlet proc install {} {
   :log "--portlet calling [self proc]"
   set name [:name]
-  db_transaction {
+  ::xo::dc transaction {
 
     #
     # create the datasource
@@ -151,14 +151,14 @@ xowiki_admin_portlet proc uninstall {} {
   # completely identical to "xowiki_portlet uninstall"
   #
   set name [:name]
-  db_transaction {
+  ::xo::dc transaction {
 
     #
     # get the datasource
     #
-    set ds_id [db_string dbqd..get_ds_id {
+    set ds_id [::xo::dc get_value get_ds_id {
       select datasource_id from portal_datasources where name = :name
-    } -default "0"]
+    } 0]
 
     if {$ds_id != 0} {
       #
