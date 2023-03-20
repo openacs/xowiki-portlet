@@ -6,10 +6,10 @@
     <pretty-plural>Xowiki Portlets</pretty-plural>
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
-    
+
     <version name="2.4.1" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.4.1.apm">
         <owner url="http://www.km.co.at">Michael Totschnig </owner>
-	<summary>Portlet for XoWiki</summary>
+        <summary>Portlet for XoWiki</summary>
         <release-date>2021-09-15</release-date>
         <vendor url="http://wu.ac.at">WU Vienna</vendor>
         <license>BSD-Style</license>
@@ -17,7 +17,7 @@
 
         <provides url="xowiki-portlet" version="2.4.1"/>
         <requires url="dotlrn" version="2.10.0"/>
-	<requires url="acs-tcl" version="5.10.1d11"/>        
+        <requires url="acs-tcl" version="5.10.1d11"/>
         <requires url="new-portal" version="2.10.0"/>
         <requires url="xowiki" version="0.83"/>
 
