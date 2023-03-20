@@ -9,6 +9,6 @@
   <msg key="manage-pages">Administrar pÃ¡ginas de</msg>
   <msg key="Name">Nombre</msg>
   <msg key="New">Nuevo</msg>
-  <msg key="new_xowiki_admin_portlet">Nuevo %element_pretty_name%</msg>
+  <msg key="new_xowiki_admin_portlet">Página nueva</msg>
   <msg key="remove-portlet">Eliminar portlet</msg>
 </message_catalog>
