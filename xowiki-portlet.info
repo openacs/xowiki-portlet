@@ -6,18 +6,19 @@
     <pretty-plural>Xowiki Portlets</pretty-plural>
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
-    
-    <version name="2.2" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.2.apm">
+
+    <version name="2.4.1" url="http://openacs.org/repository/download/apm/xowiki-portlet-2.4.1.apm">
         <owner url="http://www.km.co.at">Michael Totschnig </owner>
-	<summary>Portlet for XoWiki</summary>
-        <release-date>2017-08-06</release-date>
+        <summary>Portlet for XoWiki</summary>
+        <release-date>2024-09-02</release-date>
         <vendor url="http://wu.ac.at">WU Vienna</vendor>
         <license>BSD-Style</license>
         <maturity>1</maturity>
 
-        <provides url="xowiki-portlet" version="2.2"/>
-        <requires url="dotlrn" version="2.10.0d0"/>
-        <requires url="new-portal" version="2.10.0d0"/>
+        <provides url="xowiki-portlet" version="2.4.1"/>
+        <requires url="dotlrn" version="2.10.1"/>
+        <requires url="acs-tcl" version="5.10.1"/>
+        <requires url="new-portal" version="2.10.1"/>
         <requires url="xowiki" version="0.83"/>
 
         <callbacks>
